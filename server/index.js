@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 // CORS configuration
 app.use(cors({
-    origin: 'https://imagine-ai-93vv.vercel.app', // Specify your frontend URL
+    origin: '*', // Specify your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
