@@ -10,20 +10,24 @@ dotenv.config();
 
 const app = express();
 
+// Content Security Policy Middleware
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' https://vercel.live"
+    "default-src 'self'; script-src 'self' https://vercel.live; connect-src 'self'; img-src 'self'; style-src 'self';"
   );
   next();
 });
 
-
-// Middleware to log incoming requests
-app.use(cors());
-
-// CORS configuration
-
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === "production"
+    ? ["https://imagine-ai-93vv.vercel.app"]  // Production domain
+    : "*",  // Allow all in development
+  methods: "GET,POST,PUT,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization",
+};
+app.use(cors(corsOptions)); // Apply CORS
 
 // Middleware to parse JSON requests
 app.use(express.json({ limit: "50mb" }));
@@ -32,19 +36,21 @@ app.use(express.json({ limit: "50mb" }));
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/dalle", dalleRoutes);
 
+// Root Route
 app.get("/", (req, res) => {
-    res.send("Hello from DALL-E!");
+  res.send("Hello from DALL-E!");
 });
 
+// Start Server
 const startServer = async () => {
-    try {
-        await connectDB(process.env.MONGODB_URL);
-        app.listen(8080, () => {
-            console.log("Server has started at http://localhost:8080");
-        });
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    await connectDB(process.env.MONGODB_URL);
+    app.listen(8080, () => {
+      console.log("Server has started at http://localhost:8080");
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 startServer();
