@@ -44,7 +44,7 @@
 
   "functions": {
     "api/**/*.js": {
-      "maxDuration": 10 // Adjust based on your function's needs
+      "maxDuration": 900 // Adjust based on your function's needs
     }
   }
 }
