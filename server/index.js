@@ -11,19 +11,9 @@ dotenv.config();
 const app = express();
 
 // Middleware to log incoming requests
-app.use((req, res, next) => {
-    console.log(`Incoming request: ${req.method} ${req.url}`);
-    console.log('Origin:', req.headers.origin);
-    next();
-});
+app.use(cors());
 
 // CORS configuration
-const isProduction = process.env.NODE_ENV === 'production';
-const corsOptions = {
-  origin: isProduction ? ['https://imagine-ai-93vv.vercel.app'] : '*',
-  credentials: true,
-};
-app.use(cors(corsOptions));
 
 // Handle preflight requests manually
 app.use((req, res, next) => {
