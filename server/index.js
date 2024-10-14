@@ -12,7 +12,7 @@ const app = express();
 
 // CORS Configuration
 app.use(cors({
-  origin: 'https://imagine-ai-93vv.vercel.app', // Allow this origin
+  origin: '*', // Allow this origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
   credentials: true, // Enable cookies and auth headers
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
