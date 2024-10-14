@@ -18,11 +18,17 @@ app.use((req, res, next) => {
 });
 
 // CORS configuration
-app.use(cors({ origin: '*' }));
+const isProduction = process.env.NODE_ENV === 'production';
+const corsOptions = isProduction 
+    ? { origin: ['https://imagine-ai-93vv.vercel.app'] } 
+    : { origin: '*' }; // Allow all origins in development
 
+app.use(cors(corsOptions));
 
+// Middleware to parse JSON requests
 app.use(express.json({ limit: "50mb" }));
 
+// Routes
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/dalle", dalleRoutes);
 
