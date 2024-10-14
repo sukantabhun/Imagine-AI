@@ -10,9 +10,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: ['https://imagine-ai-93vv.vercel.app/'],
-  method: ["POST", "GET"],
-  credentials: false
+  origin: 'https://imagine-ai-93vv.vercel.app', // Allow only this origin
 }));
 app.use(express.json({ limit: "50mb" }));
 
