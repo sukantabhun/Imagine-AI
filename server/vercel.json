@@ -16,7 +16,32 @@
       },
       "dest": "/api/$1"
     }
+  ],{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
   ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://imagine-ai-93vv.vercel.app",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      },
+      "dest": "/api/$1"
+    }
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 900 // Set max duration to 60 seconds
+    }
+  }
+}
+
   "functions": {
     "api/**/*.js": {
       "maxDuration": 10 // Adjust based on your function's needs
