@@ -10,30 +10,16 @@ dotenv.config();
 const app = express();
 
 // Content Security Policy Middleware
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' https://vercel.live; connect-src 'self' https://imagine-ai-eta.vercel.app; img-src 'self'; style-src 'self';"
-  );
-  next();
-});
-
+app.use(cors({
+  origin: 'https://imagine-ai-93vv.vercel.app/',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 // Middleware to parse JSON requests
 app.use(express.json({ limit: "50mb" }));
 
-// Custom CORS Middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://imagine-ai-93vv.vercel.app"); // Replace with your frontend URL
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-  // Handle preflight requests
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200); // Respond to preflight requests
-  }
-  
-  next();
-});
+/
 
 // Routes
 app.use("/api/v1/post", postRoutes);
