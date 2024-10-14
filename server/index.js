@@ -19,11 +19,23 @@ app.use((req, res, next) => {
 
 // CORS configuration
 const isProduction = process.env.NODE_ENV === 'production';
-const corsOptions = isProduction 
-    ? { origin: ['https://imagine-ai-93vv.vercel.app'] } 
-    : { origin: '*' }; // Allow all origins in development
-
+const corsOptions = {
+  origin: isProduction ? ['https://imagine-ai-93vv.vercel.app'] : '*',
+  credentials: true,
+};
 app.use(cors(corsOptions));
+
+// Handle preflight requests manually
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', corsOptions.origin);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+    next();
+});
 
 // Middleware to parse JSON requests
 app.use(express.json({ limit: "50mb" }));
@@ -35,9 +47,6 @@ app.use("/api/v1/dalle", dalleRoutes);
 app.get("/", (req, res) => {
     res.send("Hello from DALL-E!");
 });
-
-// Optional: Enable preflight requests
-app.options('*', cors());
 
 const startServer = async () => {
     try {
