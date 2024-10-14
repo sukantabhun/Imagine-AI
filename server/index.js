@@ -21,8 +21,7 @@ app.use((req, res, next) => {
 
 // CORS Configuration
 const corsOptions = {
-  origin: "https://imagine-ai-93vv.vercel.app",  // Production domain
-
+  origin: "https://imagine-ai-93vv.vercel.app/",  // Production domain
   methods: "GET,POST,PUT,DELETE,OPTIONS",
   allowedHeaders: "Content-Type,Authorization",
 };
