@@ -11,7 +11,7 @@ const app = express();
 
 // Content Security Policy Middleware
 app.use(cors({
-  origin: 'https://imagine-ai-93vv.vercel.app/',
+  origin: 'https://imagine-ai-93vv.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
