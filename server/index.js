@@ -1,5 +1,6 @@
 import express from "express";
 import * as dotenv from "dotenv";
+import cors from "cors"; // Import cors
 
 import connectDB from "./mongodb/connect.js";
 import postRoutes from "./routes/postRoutes.js";
@@ -9,18 +10,16 @@ dotenv.config();
 
 const app = express();
 
-// Content Security Policy Middleware
+// CORS Configuration
 app.use(cors({
-  origin: 'https://imagine-ai-93vv.vercel.app',
-  mode: 'no-cors',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: 'https://imagine-ai-93vv.vercel.app', // Allow this origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  credentials: true, // Enable cookies and auth headers
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 }));
+
 // Middleware to parse JSON requests
 app.use(express.json({ limit: "50mb" }));
-
-/
 
 // Routes
 app.use("/api/v1/post", postRoutes);
