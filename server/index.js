@@ -1,6 +1,5 @@
 import express from "express";
 import * as dotenv from "dotenv";
-import cors from "cors";
 
 import connectDB from "./mongodb/connect.js";
 import postRoutes from "./routes/postRoutes.js";
@@ -19,26 +18,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// CORS Configuration (Handle Exact Origin Matching)
-const allowedOrigins = ["https://imagine-ai-93vv.vercel.app"];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true); // Allow requests from valid origins
-    } else {
-      callback(new Error("Not allowed by CORS")); // Block others
-    }
-  },
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  allowedHeaders: "Content-Type,Authorization",
-  credentials: true, // Allow cookies and authorization headers
-};
-
-app.use(cors(corsOptions)); // Apply CORS to all routes
-
 // Middleware to parse JSON requests
 app.use(express.json({ limit: "50mb" }));
+
+// Custom CORS Middleware
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://imagine-ai-93vv.vercel.app"); // Replace with your frontend URL
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200); // Respond to preflight requests
+  }
+  
+  next();
+});
 
 // Routes
 app.use("/api/v1/post", postRoutes);
@@ -48,9 +43,6 @@ app.use("/api/v1/dalle", dalleRoutes);
 app.get("/", (req, res) => {
   res.send("Hello from DALL-E!");
 });
-
-// Handle Preflight (OPTIONS) Requests for CORS
-app.options("*", cors(corsOptions));
 
 // Start Server
 const startServer = async () => {
